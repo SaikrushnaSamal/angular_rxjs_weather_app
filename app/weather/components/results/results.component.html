@@ -1,0 +1,51 @@
+<div class="alert alert-danger" role="alert" *ngIf="(error$ | async)">
+  Error in fetching the weather data. Please try again!
+</div>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">City</th>
+      <th scope="col">6 AM</th>
+      <th scope="col">12 PM</th>
+      <th scope="col">6 PM</th>
+      <th scope="col">12 AM</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="(isLoading$ | async)">
+      <td colspan="4">
+        <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr *ngFor="let city of  (cities$ | async)?.cities">
+      <td scope="row" class="tableRow">
+        {{ city.city }}
+      </td>
+      <td scope="row" class="tableRow" title="{{city.weather[2].description}}">
+        <img [src]="'assets/icons/' + city.weather[2].icon + '.png'" alt="Icon" alt="Icon" class="iconClass">
+        {{city.weather[2].temperature}} &deg;
+      </td>
+      <td scope="row" class="tableRow" title="{{city.weather[4].description}}">
+        <img [src]="'assets/icons/' + city.weather[4].icon + '.png'" alt="Icon" alt="Icon"  class="iconClass">
+        {{city.weather[4].temperature}} &deg; 
+      </td>
+      <td scope="row" class="tableRow" title="{{city.weather[6].description}}">
+        <img [src]="'assets/icons/' + city.weather[6].icon + '.png'" alt="Icon" alt="Icon"  class="iconClass">
+        {{city.weather[6].temperature}} &deg; 
+      </td>
+      <td scope="row" class="tableRow" title="{{city.weather[0].description}}">
+        <img [src]="'assets/icons/' + city.weather[0].icon + '.png'" alt="Icon" alt="Icon"  class="iconClass">
+        {{city.weather[0].temperature}} &deg; 
+      </td>
+    </tr>
+  </tbody>
+
+</table>
+
+<div *ngIf="!(cities$ | async)?.cities.length" class="alert alert-info" role="alert">
+  No data to show. Please enter the name of a city to retrieve its weather information
+</div>
